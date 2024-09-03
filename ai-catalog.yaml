@@ -28,6 +28,8 @@ apiVersion: backstage.io/v1alpha1
 kind: Component
 metadata:
   name: vLLM
+  annotations:
+    backstage.io/techdocs-ref: dir:.
   description: 'AI Model server popular for hosting large language models in enterprise settings. OpenAI API compatible. '
   links:
     - url: https://docs.vllm.ai/en/stable/
