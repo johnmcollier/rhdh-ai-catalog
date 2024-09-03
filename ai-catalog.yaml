@@ -14,8 +14,6 @@ metadata:
       title: What is Backstage? 
       type: website 
       icon: WebAsset
-  # annotations:
-  #   backstage.io/techdocs-ref: url:https://github.com/benwilcock/backstage-genai-talk
 spec: 
   owner: user:benwilcock
   profile:
@@ -40,7 +38,7 @@ metadata:
     - genai
 spec:
   type: ai-model-server
-  owner: user:benwilcock
+  owner: user:johnmcollier
   system: developer-lightspeed
   lifecycle: production
   providesApis:
@@ -70,7 +68,7 @@ metadata:
     - llm
 spec:
   type: ai-model
-  owner: user:benwilcock
+  owner: user:johnmcollier
   system: developer-lightspeed
   lifecycle: production
   providesApis:
@@ -99,7 +97,7 @@ metadata:
       icon: WebAsset
 spec:
   type: api
-  owner: user:benwilcock
+  owner: user:johnmcollier
   system: developer-lightspeed
   lifecycle: production
   dependencyOf: 
