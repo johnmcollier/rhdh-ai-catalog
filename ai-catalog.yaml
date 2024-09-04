@@ -191,5 +191,6 @@ spec:
   lifecycle: production
   dependencyOf: 
     - component:ibm-granite-8b-code-instruct
+    - component:meta-llama-31-8b-instruct
   definition:
     $text: https://github.com/johnmcollier/rhdh-ai-catalog/blob/main/openapi.json
