@@ -5,19 +5,21 @@
 apiVersion: backstage.io/v1alpha1
 kind: System
 metadata:
-  name: developer-lightspeed
-  description: "Generative AI for Red Hat Developer Hub and Backstage."
+  name: developer-model-service
+  description: "vLLM Model Service providing models for developer tools"
   tags:
     - genai
+    - vllm
+    - developer-tools
   links:
-    - url: https://backstage.io/docs/overview/what-is-backstage/ 
-      title: What is Backstage? 
+    - url: https://model-service.apps.rosa.redhat-ai-dev.m6no.p3.openshiftapps.com/
+      title: Developer Model Service
       type: website 
       icon: WebAsset
 spec: 
-  owner: user:benwilcock
+  owner: user:johnmcollier
   profile:
-    displayName: Red Hat Developer Lightspeed
+    displayName: Developer Tools vLLM Service
 ---
 ####################################
 # COMPONENTS
@@ -25,29 +27,41 @@ spec:
 apiVersion: backstage.io/v1alpha1
 kind: Component
 metadata:
-  name: vLLM
+  name: ibm-granite-8b-code-instruct
   annotations:
     backstage.io/techdocs-ref: dir:.
   description: 'AI Model server popular for hosting large language models in enterprise settings. OpenAI API compatible. '
   links:
+    - url: https://model-service.apps.rosa.redhat-ai-dev.m6no.p3.openshiftapps.com/
+      title: Access
+      type: website
+      icon: WebAssett
+    - url: https://ibm-granite-8b-code-instruct-vllm.apps.rosa.redhat-ai-dev.m6no.p3.openshiftapps.com/
+      title: API URL
+      type: website
+      icon: WebAsset
     - url: https://docs.vllm.ai/en/stable/
       title: vLLM Documentation
+      type: website
+      icon: WebAsset
+    - url: https://www.apache.org/licenses/LICENSE-2.0
+      title: Apache-2.0 License
       type: website
       icon: WebAsset
   tags:
     - genai
 spec:
-  type: ai-model-server
+  type: LLM
   owner: user:johnmcollier
-  system: developer-lightspeed
+  system: developer-model-service
   lifecycle: production
   providesApis:
-    - openai-api
-  dependsOn: 
-    - resource:granite-code-model
-    - api:openai-api
+    - model-service-api
+  dependsOn:
+    - resource:ibm-granite-8b-code-instruct
+    - api:model-service-api
   profile:
-    displayName: "vLLM AI Model Server"
+    displayName: "IBM Granite 8b Code Model Service"
 ---
 ####################################
 # RESOURCES
@@ -55,7 +69,7 @@ spec:
 apiVersion: backstage.io/v1alpha1
 kind: Resource
 metadata:
-  name: granite-code-model
+  name: ibm-granite-8b-code-instruct
   description: 'IBM Granite is a decoder-only code model for code generative tasks (e.g. fixing bugs, explaining code, documenting code. Trained with code written in 116 programming languages.'
   links:
     - url: https://github.com/ibm-granite/granite-code-models
@@ -69,10 +83,10 @@ metadata:
 spec:
   type: ai-model
   owner: user:johnmcollier
-  system: developer-lightspeed
+  system: developer-model-service
   lifecycle: production
   providesApis:
-    - openai-api
+    - model-service-api
   dependencyOf: 
     - component:vLLM
   profile:
@@ -84,23 +98,24 @@ spec:
 apiVersion: backstage.io/v1alpha1
 kind: API
 metadata:
-  name: openai-api
-  title: OpenAI API
-  description: 'The REST API exposed by ChatGPT and compatible systems such as vLLM, Ollama, etc.'
+  name: model-service-api
+  title: Model Service API
+  description: 'The REST API exposed by the vLLM-based model service.'
   tags:
     - api
     - openai
+    - vllm
   links:
-    - url: https://platform.openai.com/docs/api-reference
-      title: OpenAI API Documentation
+    - url: https://model-service.apps.rosa.redhat-ai-dev.m6no.p3.openshiftapps.com/docs
+      title: Model Service API Documentation
       type: website
       icon: WebAsset
 spec:
   type: api
   owner: user:johnmcollier
-  system: developer-lightspeed
+  system: developer-model-service
   lifecycle: production
   dependencyOf: 
-    - component:vLLM
+    - component:ibm-granite-8b-code-instruct
   definition:
-    $text: https://github.com/benwilcock/backstagecon-2023/blob/main/openai-api-spec/openapi.yaml
+    $text: https://github.com/johnmcollier/rhdh-ai-catalog/blob/main/openapi.json
